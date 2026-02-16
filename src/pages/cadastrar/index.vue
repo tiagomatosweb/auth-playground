@@ -8,6 +8,9 @@
       :submit="{ label: 'Cadastrar', block: true }"
       @submit="onSubmit"
     >
+      <template v-if="error" #validation>
+        <UAlert color="error" variant="soft" :description="error" />
+      </template>
       <template #footer>
         <p class="text-center text-sm text-muted">
           Já tem uma conta?
@@ -19,8 +22,19 @@
 </template>
 
 <script setup>
+definePage({
+  meta: { auth: 'excluded' },
+})
+
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { object, string, ref as yupRef } from 'yup'
 import AuthLayout from '@/layouts/AuthLayout.vue'
+import { useAuth } from '@/composables/useAuth.js'
+
+const router = useRouter()
+const { register, login } = useAuth()
+const error = ref('')
 
 const fields = [
   { name: 'name', type: 'text', label: 'Nome' },
@@ -37,6 +51,19 @@ const schema = object({
 })
 
 const onSubmit = async (payload) => {
-  // TODO: submit payload.data
+  error.value = ''
+  const { name, email, password } = payload.data
+  try {
+    await register({
+      first_name: name,
+      email,
+      password,
+    })
+    await login({ email, password })
+    router.push({ name: '/' })
+  } catch (e) {
+    const msg = e.response?.data?.message ?? e.response?.data?.errors ?? 'Falha ao cadastrar. Tente novamente.'
+    error.value = typeof msg === 'object' ? Object.values(msg).flat().join(' ') : msg
+  }
 }
 </script>
