@@ -11,6 +11,7 @@
       <template v-if="error" #validation>
         <UAlert color="error" variant="soft" :description="error" />
       </template>
+
       <template #footer>
         <p class="text-center text-sm text-muted">
           Ainda não tem uma conta?
@@ -22,15 +23,15 @@
 </template>
 
 <script setup>
-definePage({
-  meta: { auth: 'guest' },
-})
-
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { object, string } from 'yup'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { useAuth } from '@/composables/useAuth.js'
+
+definePage({
+  meta: { auth: 'guest' },
+})
 
 const router = useRouter()
 const { login } = useAuth()
@@ -52,8 +53,7 @@ const onSubmit = async (payload) => {
     await login(payload.data)
     router.push({ name: '/' })
   } catch (e) {
-    const msg = e.response?.data?.message ?? e.response?.data?.errors ?? 'Falha ao entrar. Tente novamente.'
-    error.value = typeof msg === 'object' ? Object.values(msg).flat().join(' ') : msg
+    error.value = e.message
   }
 }
 </script>

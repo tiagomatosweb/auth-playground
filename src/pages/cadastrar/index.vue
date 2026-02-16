@@ -11,6 +11,7 @@
       <template v-if="error" #validation>
         <UAlert color="error" variant="soft" :description="error" />
       </template>
+
       <template #footer>
         <p class="text-center text-sm text-muted">
           Já tem uma conta?
@@ -22,15 +23,15 @@
 </template>
 
 <script setup>
-definePage({
-  meta: { auth: 'excluded' },
-})
-
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { object, string, ref as yupRef } from 'yup'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { useAuth } from '@/composables/useAuth.js'
+
+definePage({
+  meta: { auth: 'excluded' },
+})
 
 const router = useRouter()
 const { register, login } = useAuth()
@@ -62,8 +63,7 @@ const onSubmit = async (payload) => {
     await login({ email, password })
     router.push({ name: '/' })
   } catch (e) {
-    const msg = e.response?.data?.message ?? e.response?.data?.errors ?? 'Falha ao cadastrar. Tente novamente.'
-    error.value = typeof msg === 'object' ? Object.values(msg).flat().join(' ') : msg
+    error.value = e.message
   }
 }
 </script>

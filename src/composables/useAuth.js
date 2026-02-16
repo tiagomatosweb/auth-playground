@@ -12,7 +12,7 @@ export function useAuth() {
       user.value = data
       return data
     } catch (e) {
-      if (e.response?.status === 401) {
+      if (e.status === 401) {
         user.value = null
         return null
       }

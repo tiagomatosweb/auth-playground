@@ -3,7 +3,5 @@
 </template>
 
 <script setup>
-definePage({
-  meta: { auth: true },
-})
+
 </script>
