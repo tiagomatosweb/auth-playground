@@ -35,6 +35,8 @@ export function useAuth() {
     await api.post('/api/register', payload)
   }
 
+  const ensureCsrfCookie = () => api.ensureCsrfCookie()
+
   return {
     user,
     isAuthenticated,
@@ -42,5 +44,6 @@ export function useAuth() {
     login,
     logout,
     register,
+    ensureCsrfCookie,
   }
 }

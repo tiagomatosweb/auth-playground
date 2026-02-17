@@ -6,6 +6,7 @@ import VueRouter from 'vue-router/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: { port: 3000 },
   resolve: {
     alias: { '@': path.resolve(__dirname, './src') },
   },

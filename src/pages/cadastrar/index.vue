@@ -5,6 +5,7 @@
       description="Preencha os dados abaixo para se cadastrar"
       :fields="fields"
       :schema="schema"
+      loading-auto
       :submit="{ label: 'Cadastrar', block: true }"
       @submit="onSubmit"
     >
@@ -34,34 +35,33 @@ definePage({
 })
 
 const router = useRouter()
-const { register, login } = useAuth()
+const { register } = useAuth()
 const error = ref('')
 
 const fields = [
-  { name: 'name', type: 'text', label: 'Nome' },
+  { name: 'first_name', type: 'text', label: 'Primeiro nome' },
   { name: 'email', type: 'email', label: 'Email' },
   { name: 'password', type: 'password', label: 'Senha' },
   { name: 'password_confirmation', type: 'password', label: 'Confirmar senha' },
 ]
 
 const schema = object({
-  name: string().required().label('Nome'),
+  first_name: string().required().label('Primeiro nome'),
   email: string().email().required().label('Email'),
   password: string().min(8).required().label('Senha'),
   password_confirmation: string().required().oneOf([yupRef('password')]).label('Confirmar senha'),
 })
 
-const onSubmit = async (payload) => {
+const onSubmit = async ({ data }) => {
   error.value = ''
-  const { name, email, password } = payload.data
+  const { first_name, email, password } = data
   try {
     await register({
-      first_name: name,
+      first_name,
       email,
       password,
     })
-    await login({ email, password })
-    router.push({ name: '/' })
+    router.push({ name: '/login/' })
   } catch (e) {
     error.value = e.message
   }

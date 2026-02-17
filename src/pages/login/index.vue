@@ -5,6 +5,7 @@
       description="Digite seu email e senha para acessar sua conta"
       :fields="fields"
       :schema="schema"
+      loading-auto
       :submit="{ label: 'Entrar', block: true }"
       @submit="onSubmit"
     >
@@ -47,10 +48,10 @@ const schema = object({
   password: string().required().label('Senha'),
 })
 
-const onSubmit = async (payload) => {
+const onSubmit = async ({ data }) => {
   error.value = ''
   try {
-    await login(payload.data)
+    await login(data)
     router.push({ name: '/' })
   } catch (e) {
     error.value = e.message
