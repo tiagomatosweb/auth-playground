@@ -1,17 +1,13 @@
 <template>
   <AuthLayout>
     <UCard>
-      <div class="space-y-4 text-center">
-        <h1 class="text-xl font-semibold">Hello World</h1>
-        <UButton variant="soft" block @click="onLogout">
-          Sair
-        </UButton>
-      </div>
+      <p class="text-center text-muted">Saindo...</p>
     </UCard>
   </AuthLayout>
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { useAuth } from '@/composables/useAuth.js'
@@ -23,8 +19,9 @@ definePage({
 const router = useRouter()
 const { logout } = useAuth()
 
-const onLogout = async () => {
+onMounted(async () => {
   await logout()
-  router.push({ name: '/login/' })
-}
+  router.replace({ name: '/login/' })
+})
 </script>
+
