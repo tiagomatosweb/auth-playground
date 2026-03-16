@@ -1,4 +1,6 @@
 import { ref, computed } from 'vue'
+import { authAPI } from '@/api/auth.js'
+import { meAPI } from '@/api/me.js'
 import api from '@/api/client.js'
 
 const user = ref(null)
@@ -8,7 +10,7 @@ export function useAuth() {
 
   const fetchUser = async () => {
     try {
-      const { data } = await api.get('/api/me')
+      const { data } = await meAPI.getMe()
       user.value = data
       return data
     } catch (e) {
@@ -21,18 +23,22 @@ export function useAuth() {
   }
 
   const login = async (credentials) => {
-    const { data } = await api.post('/api/login', credentials)
+    const { data } = await authAPI.login(credentials)
     user.value = data
     return data
   }
 
   const logout = async () => {
-    await api.post('/api/logout')
+    await authAPI.logout()
     user.value = null
   }
 
   const register = async (payload) => {
-    await api.post('/api/register', payload)
+    await authAPI.register(payload)
+  }
+
+  const verifyEmail = async (token) => {
+    await authAPI.verifyEmail(token)
   }
 
   const ensureCsrfCookie = () => api.ensureCsrfCookie()
@@ -44,6 +50,7 @@ export function useAuth() {
     login,
     logout,
     register,
+    verifyEmail,
     ensureCsrfCookie,
   }
 }

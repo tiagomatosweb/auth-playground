@@ -13,6 +13,12 @@ export default defineConfig({
   plugins: [
     VueRouter({ dts: 'src/route-map.d.ts' }),
     vue(),
-    ui(),
+    ui({
+      ui: {
+        colors: {
+          neutral: 'zinc'
+        },
+      },
+    }),
   ],
 })

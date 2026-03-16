@@ -47,6 +47,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/verificar-email/': RouteRecordInfo<
+      '/verificar-email/',
+      '/verificar-email',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
   }
 
   /**
@@ -75,6 +82,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/login/index.vue': {
       routes:
         | '/login/'
+      views:
+        | never
+    }
+    'src/pages/verificar-email/index.vue': {
+      routes:
+        | '/verificar-email/'
       views:
         | never
     }
