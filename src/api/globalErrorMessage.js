@@ -16,6 +16,7 @@ const messages = {
   UserNotFound: 'Usuário não encontrado.',
   InvalidConfirmationToken: 'Este link de verificação é inválido ou expirou.',
   InvalidPasswordResetCode: 'Este link de redefinição é inválido ou expirou.',
+  InvalidResetPasswordCode: 'Este código é inválido ou expirou. Solicite um novo.',
   InvalidEmailChangeCode: 'Este link de alteração de e-mail é inválido ou expirou.',
   TenantNotAssociated: 'O workspace selecionado não está associado a este usuário.',
 

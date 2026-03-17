@@ -13,6 +13,10 @@
         <UAlert color="error" variant="soft" :description="error" />
       </template>
 
+      <template #password-hint>
+          <ULink to="/esqueci-senha/" class="text-primary font-medium" tabindex="-1">Esqueci minha senha</ULink>
+        </template>
+
       <template #footer>
         <p class="text-center text-sm text-muted">
           Ainda não tem uma conta?

@@ -40,6 +40,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/esqueci-senha/': RouteRecordInfo<
+      '/esqueci-senha/',
+      '/esqueci-senha',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/login/': RouteRecordInfo<
       '/login/',
       '/login',
@@ -83,6 +90,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/cadastrar/index.vue': {
       routes:
         | '/cadastrar/'
+      views:
+        | never
+    }
+    'src/pages/esqueci-senha/index.vue': {
+      routes:
+        | '/esqueci-senha/'
       views:
         | never
     }
