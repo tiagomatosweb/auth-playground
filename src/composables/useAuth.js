@@ -28,6 +28,12 @@ export function useAuth() {
     return data
   }
 
+  const loginWithCode = async (payload) => {
+    const { data } = await authAPI.verifyLoginCode(payload)
+    user.value = data
+    return data
+  }
+
   const logout = async () => {
     await authAPI.logout()
     user.value = null
@@ -48,6 +54,7 @@ export function useAuth() {
     isAuthenticated,
     fetchUser,
     login,
+    loginWithCode,
     logout,
     register,
     verifyEmail,

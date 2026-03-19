@@ -5,6 +5,8 @@
       description="Digite seu email e senha para acessar sua conta"
       :fields="fields"
       :schema="schema"
+      :providers="providers"
+      separator="ou"
       loading-auto
       :submit="{ label: 'Entrar', block: true }"
       @submit="onSubmit"
@@ -14,8 +16,10 @@
       </template>
 
       <template #password-hint>
-          <ULink to="/esqueci-senha/" class="text-primary font-medium" tabindex="-1">Esqueci minha senha</ULink>
-        </template>
+        <ULink to="/esqueci-senha/" class="text-primary font-medium" tabindex="-1">
+          Esqueci minha senha
+        </ULink>
+      </template>
 
       <template #footer>
         <p class="text-center text-sm text-muted">
@@ -41,6 +45,14 @@ definePage({
 const router = useRouter()
 const { login } = useAuth()
 const error = ref('')
+
+const providers = [
+  {
+    label: 'Entrar com código',
+    icon: 'i-lucide-key-round',
+    onClick: () => router.push({ name: '/login-codigo/' }),
+  },
+]
 
 const fields = [
   { name: 'email', type: 'email', label: 'Email' },
