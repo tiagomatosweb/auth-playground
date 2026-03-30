@@ -9,4 +9,6 @@ export const authAPI = {
   resetPassword: (data) => api.post('/api/reset-password', data),
   requestLoginCode: (email) => api.post('/api/login-codes/request', { email }),
   verifyLoginCode: (data) => api.post('/api/login-codes/verify', data),
+  requestLoginLink: (email) => api.post('/api/login-links/request', { email }),
+  verifyLoginLink: (token) => api.post('/api/login-links/verify', { token }),
 }

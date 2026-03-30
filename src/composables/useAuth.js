@@ -34,6 +34,12 @@ export function useAuth() {
     return data
   }
 
+  const loginWithMagicLink = async (token) => {
+    const { data } = await authAPI.verifyLoginLink(token)
+    user.value = data
+    return data
+  }
+
   const logout = async () => {
     await authAPI.logout()
     user.value = null
@@ -55,6 +61,7 @@ export function useAuth() {
     fetchUser,
     login,
     loginWithCode,
+    loginWithMagicLink,
     logout,
     register,
     verifyEmail,

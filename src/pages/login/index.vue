@@ -1,6 +1,11 @@
 <template>
   <AuthLayout>
+    <div v-if="magicLinkLoading" class="text-center space-y-4">
+      <p class="text-muted">Validando link de login...</p>
+    </div>
+
     <UAuthForm
+      v-else
       title="Login"
       description="Digite seu email e senha para acessar sua conta"
       :fields="fields"
@@ -11,8 +16,8 @@
       :submit="{ label: 'Entrar', block: true }"
       @submit="onSubmit"
     >
-      <template v-if="error" #validation>
-        <UAlert color="error" variant="soft" :description="error" />
+      <template v-if="magicLinkError || error" #validation>
+        <UAlert color="error" variant="soft" :description="magicLinkError || error" />
       </template>
 
       <template #password-hint>
@@ -32,8 +37,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { object, string } from 'yup'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { useAuth } from '@/composables/useAuth.js'
@@ -42,15 +47,44 @@ definePage({
   meta: { auth: 'guest' },
 })
 
+const route = useRoute()
 const router = useRouter()
-const { login } = useAuth()
+const { login, loginWithMagicLink } = useAuth()
 const error = ref('')
+const magicLinkLoading = ref(false)
+const magicLinkError = ref('')
+
+watch(
+  () => route.query.token,
+  async (token) => {
+    if (!token) return
+
+    magicLinkLoading.value = true
+    magicLinkError.value = ''
+    error.value = ''
+    try {
+      await loginWithMagicLink(token)
+      await router.replace({ name: '/' })
+    } catch (e) {
+      magicLinkError.value = e.message
+      await router.replace({ name: '/login/', query: {} })
+    } finally {
+      magicLinkLoading.value = false
+    }
+  },
+  { immediate: true },
+)
 
 const providers = [
   {
     label: 'Entrar com código',
     icon: 'i-lucide-key-round',
     onClick: () => router.push({ name: '/login-codigo/' }),
+  },
+  {
+    label: 'Login mágico',
+    icon: 'i-lucide-sparkles',
+    onClick: () => router.push({ name: '/login-magico/' }),
   },
 ]
 
@@ -66,6 +100,7 @@ const schema = object({
 
 const onSubmit = async ({ data }) => {
   error.value = ''
+  magicLinkError.value = ''
   try {
     await login(data)
     router.push({ name: '/' })
