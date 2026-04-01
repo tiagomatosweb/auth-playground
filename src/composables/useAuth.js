@@ -28,6 +28,12 @@ export function useAuth() {
     return data
   }
 
+  const loginSocial = async (payload) => {
+    const { data } = await authAPI.loginSocial(payload)
+    user.value = data
+    return data
+  }
+
   const loginWithCode = async (payload) => {
     const { data } = await authAPI.verifyLoginCode(payload)
     user.value = data
@@ -60,6 +66,7 @@ export function useAuth() {
     isAuthenticated,
     fetchUser,
     login,
+    loginSocial,
     loginWithCode,
     loginWithMagicLink,
     logout,

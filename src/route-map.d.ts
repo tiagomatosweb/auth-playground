@@ -33,6 +33,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/auth/callback': RouteRecordInfo<
+      '/auth/callback',
+      '/auth/callback',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/cadastrar/': RouteRecordInfo<
       '/cadastrar/',
       '/cadastrar',
@@ -98,6 +105,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/index.vue': {
       routes:
         | '/'
+      views:
+        | never
+    }
+    'src/pages/auth/callback.vue': {
+      routes:
+        | '/auth/callback'
       views:
         | never
     }

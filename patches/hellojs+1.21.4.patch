@@ -1,0 +1,14 @@
+diff --git a/node_modules/hellojs/dist/hello.all.js b/node_modules/hellojs/dist/hello.all.js
+index 91626cc..4c78cef 100644
+--- a/node_modules/hellojs/dist/hello.all.js
++++ b/node_modules/hellojs/dist/hello.all.js
+@@ -2539,8 +2539,7 @@ hello.utils.extend(hello.utils, {
+ // Handle any response solicited through iframe hash tag following an API request
+ //
+ /////////////////////////////////////
+-
+-hello.utils.responseHandler(window, window.opener || window.parent);
++// responseHandler is invoked from app bootstrap after hello.init() (see src/main.js)
+ // Script to support ChromeApps
+ // This overides the hello.utils.popup method to support chrome.identity.launchWebAuthFlow
+ // See https://developer.chrome.com/apps/app_identity#non

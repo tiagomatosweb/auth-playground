@@ -41,6 +41,7 @@ import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { object, string } from 'yup'
 import AuthLayout from '@/layouts/AuthLayout.vue'
+import { hello } from '@/plugins/hello.js'
 import { useAuth } from '@/composables/useAuth.js'
 
 definePage({
@@ -49,10 +50,35 @@ definePage({
 
 const route = useRoute()
 const router = useRouter()
-const { login, loginWithMagicLink } = useAuth()
+const { login, loginSocial, loginWithMagicLink } = useAuth()
 const error = ref('')
 const magicLinkLoading = ref(false)
 const magicLinkError = ref('')
+const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+
+const loginWithGoogle = async () => {
+  error.value = ''
+  if (!googleClientId) {
+    error.value = 'Google login não configurado'
+    return
+  }
+  try {
+    await hello('google').login({
+      scope: 'email,profile',
+      display: 'popup',
+      force: false,
+    })
+    const session = hello('google').getAuthResponse()
+    const token = session?.access_token
+    if (!token) throw new Error('No access token')
+
+    await loginSocial({ provider: 'google', token })
+    router.push({ name: '/' })
+  } catch (e) {
+    error.value = e.message || 'Falha no login com Google'
+    console.error('Google login failed:', e)
+  }
+}
 
 watch(
   () => route.query.token,
@@ -86,6 +112,11 @@ const providers = [
     icon: 'i-lucide-sparkles',
     onClick: () => router.push({ name: '/login-magico/' }),
   },
+  {
+    label: 'Continuar com Google',
+    icon: 'i-logos-google-icon',
+    onClick: () => loginWithGoogle(),
+  },
 ]
 
 const fields = [
@@ -108,4 +139,5 @@ const onSubmit = async ({ data }) => {
     error.value = e.message
   }
 }
+
 </script>

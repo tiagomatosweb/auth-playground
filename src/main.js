@@ -6,10 +6,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from 'vue-router/auto-routes'
 import { useAuth } from './composables/useAuth.js'
 import { runMiddleware } from './middleware/index.js'
+import { hello, initHello } from './plugins/hello.js'
 import './style.css'
 import App from './App.vue'
 
 setLocale(pt)
+initHello()
+hello.utils.responseHandler(window, window.opener || window.parent)
 
 const { fetchUser, user, isAuthenticated } = useAuth()
 await fetchUser()
